@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ahmed Fathy — Creative Developer | 3D Experiences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0c;
+  --fg:#f2f2f0;
+  --gold:#e8b04b;
+  --blue:#5b8def;
+  --grey:#8a8a8a;
+  --font-d:'Archivo',sans-serif;
+  --font-b:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--font-b);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+@media (hover:hover){ body, a, button{cursor:none} }
+::selection{background:var(--gold);color:#000}
+
+/* ---------- Preloader ---------- */
+#preloader{
+  position:fixed;inset:0;z-index:1000;background:#050506;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+}
+.pre-counter{font-family:var(--font-d);font-weight:900;font-size:clamp(48px,8vw,110px);color:var(--fg);font-variant-numeric:tabular-nums}
+.pre-logo{letter-spacing:.35em;font-size:12px;color:var(--grey)}
+
+/* ---------- Cursor ---------- */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:999;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:6px;height:6px;background:var(--fg);mix-blend-mode:difference}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(242,242,240,.6);transition:width .3s,height .3s,border-color .3s;mix-blend-mode:difference}
+.cursor-ring.grow{width:70px;height:70px;border-color:var(--gold)}
+@media (hover:none){.cursor-dot,.cursor-ring{display:none}}
+
+/* ---------- Canvas & grain ---------- */
+#webgl{position:fixed;inset:0;z-index:0}
+.grain{position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-5%,-2%)}80%{transform:translate(4%,4%)}}
+
+/* ---------- Nav ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:26px 4vw;mix-blend-mode:difference;
+}
+.logo{font-family:var(--font-d);font-weight:900;color:var(--fg);text-decoration:none;letter-spacing:.08em;font-size:18px}
+.logo sup{font-size:9px}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{color:var(--fg);text-decoration:none;font-size:14px;letter-spacing:.04em;position:relative}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--fg);transition:width .35s}
+.nav-links a:hover::after{width:100%}
+.burger{background:none;border:none;display:flex;flex-direction:column;gap:5px;padding:4px}
+.burger span{width:24px;height:2px;background:var(--fg);transition:.35s}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ---------- Menu overlay ---------- */
+.menu-overlay{
+  position:fixed;inset:0;z-index:90;background:rgba(6,6,8,.92);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;justify-content:center;padding:0 8vw;gap:6px;
+  clip-path:inset(0 0 100% 0);transition:clip-path .7s cubic-bezier(.76,0,.24,1);
+}
+.menu-overlay.open{clip-path:inset(0 0 0% 0)}
+.menu-item{
+  font-family:var(--font-d);font-weight:900;font-size:clamp(38px,7vw,84px);
+  color:var(--fg);text-decoration:none;line-height:1.15;text-transform:uppercase;
+  transition:color .3s,transform .3s;display:flex;align-items:baseline;gap:20px;
+}
+.menu-item em{font-style:normal;font-size:14px;font-weight:400;color:var(--grey);font-family:var(--font-b)}
+.menu-item:hover{color:var(--gold);transform:translateX(16px)}
+
+/* ---------- Sections ---------- */
+main{position:relative;z-index:5}
+.section{
+  min-height:100vh;padding:16vh 6vw;position:relative;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.section.right{align-items:flex-end;text-align:right}
+.mega{
+  font-family:var(--font-d);font-weight:900;text-transform:uppercase;
+  font-size:clamp(52px,9.5vw,150px);line-height:.92;letter-spacing:-.01em;
+  mix-blend-mode:difference;
+}
+.mega.outline{color:transparent;-webkit-text-stroke:2px var(--fg)}
+.giant{
+  font-family:var(--font-d);font-weight:800;text-transform:capitalize;
+  font-size:clamp(34px,5.4vw,72px);line-height:1.05;mix-blend-mode:difference;
+}
+.line{display:block;overflow:hidden}
+.reveal{display:inline-block;will-change:transform}
+.intro,.section p{max-width:520px;margin-top:26px;color:#c9c9c7;font-size:16px;line-height:1.7;font-weight:300}
+.section.right p{margin-right:0}
+b{color:var(--fg);font-weight:500}
+
+.hero{justify-content:space-between}
+.hero-inner{padding-top:6vh}
+.scroll-hint{position:absolute;bottom:6vh;left:6vw;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);display:flex;align-items:center;gap:14px}
+.scroll-hint i{display:block;width:60px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.3}}
+
+/* expertise */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:40px;margin-top:7vh;max-width:1100px}
+.col h3{font-family:var(--font-d);font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:18px}
+.col ul{list-style:none}
+.col li{color:var(--grey);font-size:14px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);transition:color .3s,padding-left .3s}
+.col li:hover{color:var(--fg);padding-left:8px}
+
+/* team names */
+.names{display:flex;flex-wrap:wrap;gap:18px 40px;margin-top:6vh;max-width:1000px}
+.names span{font-family:var(--font-d);font-weight:800;font-size:clamp(22px,3.2vw,44px);text-transform:capitalize;color:transparent;-webkit-text-stroke:1px rgba(242,242,240,.75);transition:.35s}
+.names span:hover{color:var(--gold);-webkit-text-stroke:1px var(--gold);transform:translateY(-4px)}
+
+/* contact */
+.contact{align-items:center;text-align:center;justify-content:center}
+.eyebrow{font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--grey)}
+.mail{
+  font-family:var(--font-b);font-weight:300;color:var(--fg);text-decoration:none;
+  font-size:clamp(17px,3.8vw,64px);margin:22px 0 10vh;display:inline-block;position:relative;
+  word-break:break-all;
+}
+.mail::after{content:'';position:absolute;left:0;bottom:-6px;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .5s cubic-bezier(.76,0,.24,1)}
+.mail:hover::after{transform:scaleX(1);transform-origin:left}
+.foot{display:flex;flex-wrap:wrap;gap:50px;justify-content:center;text-align:left}
+.fcol h4{font-family:var(--font-d);font-size:13px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;color:var(--gold)}
+.fcol p{color:var(--grey);font-size:13px;line-height:1.8}
+.flink{color:var(--grey);text-decoration:none;transition:color .3s}
+.flink:hover{color:var(--gold)}
+.copy{margin-top:9vh;font-size:11px;color:#555;letter-spacing:.1em}
+
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="pre-counter"><span id="counter">0</span>%</div>
+    <div class="pre-logo">AHMED FATHY</div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- WebGL canvas -->
+  <canvas id="webgl"></canvas>
+  <div class="grain"></div>
+
+  <!-- Navigation -->
+  <header class="nav">
+    <a href="#" class="logo hoverable">AF<sup>®</sup></a>
+    <nav class="nav-links">
+      <a href="https://wa.me/201101431270" class="hoverable" target="_blank" rel="noopener">Lets talk</a>
+      <a href="#team" class="hoverable" data-scroll>Why me</a>
+      <a href="#contact" class="hoverable" data-scroll>Contact</a>
+      <button class="burger hoverable" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <!-- Fullscreen menu -->
+  <div class="menu-overlay" id="menuOverlay">
+    <a href="#agency" data-scroll class="menu-item hoverable"><em>01</em>About</a>
+    <a href="#solutions" data-scroll class="menu-item hoverable"><em>02</em>Services</a>
+    <a href="#expertise" data-scroll class="menu-item hoverable"><em>03</em>Expertise</a>
+    <a href="#team" data-scroll class="menu-item hoverable"><em>04</em>Why Me</a>
+    <a href="#contact" data-scroll class="menu-item hoverable"><em>05</em>Contact</a>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="section hero" data-shape="0">
+      <div class="hero-inner">
+        <h1 class="mega">
+          <span class="line"><span class="reveal">AHMED</span></span>
+          <span class="line"><span class="reveal">FATHY</span></span>
+        </h1>
+        <p class="intro reveal">I create <b>immersive digital experiences</b> at the intersection between <b>design</b> and <b>technology</b> — helping brands <b>stand out</b>, impress their audience, and <b>grow</b>.</p>
+      </div>
+      <div class="scroll-hint"><span class="reveal">Scroll to explore</span><i></i></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section right" id="agency" data-shape="1">
+      <h2 class="mega outline"><span class="line"><span class="reveal">ABOUT</span></span></h2>
+      <p class="reveal">I'm <b>Ahmed Fathy</b> — a developer &amp; designer who believes that <b>creativity</b>, design and emotion are the key to connecting businesses with their audience. Every project I build is crafted with passion, precision and attention to detail.</p>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section" id="solutions" data-shape="2">
+      <h2 class="mega"><span class="line"><span class="reveal">SERVICES</span></span></h2>
+      <p class="reveal">I build <b>innovative digital solutions</b> — from stunning 3D websites to complete brand experiences — crafted around the user, engineered for <b>performance</b>, and designed to elevate your presence.</p>
+    </section>
+
+    <!-- EXPERTISE -->
+    <section class="section" id="expertise" data-shape="3">
+      <h2 class="giant"><span class="line"><span class="reveal">Skills &amp;</span></span><span class="line"><span class="reveal">expertise</span></span></h2>
+      <div class="cols">
+        <div class="col reveal">
+          <h3>Development</h3>
+          <ul><li>3D &amp; Interactive Websites</li><li>Landing Pages</li><li>E-commerce Stores</li><li>Web Applications</li><li>SEO Optimization</li></ul>
+        </div>
+        <div class="col reveal">
+          <h3>Design</h3>
+          <ul><li>UI/UX Design</li><li>Brand Identity</li><li>Motion Design</li><li>Graphic Design</li><li>Social Media Design</li></ul>
+        </div>
+        <div class="col reveal">
+          <h3>Technologies</h3>
+          <ul><li>Three.js / WebGL</li><li>GSAP Animations</li><li>React &amp; Next.js</li><li>HTML / CSS / JavaScript</li><li>WordPress</li></ul>
+        </div>
+        <div class="col reveal">
+          <h3>Support</h3>
+          <ul><li>Maintenance &amp; Updates</li><li>Hosting Setup</li><li>Performance Tuning</li><li>Fast Response</li><li>Long-term Partnership</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY ME -->
+    <section class="section" id="team" data-shape="4">
+      <h2 class="mega"><span class="line"><span class="reveal">WHY</span></span><span class="line"><span class="reveal">WORK</span></span><span class="line"><span class="reveal">WITH ME</span></span></h2>
+      <p class="reveal">One dedicated expert, fully committed to your project — from the <b>first idea</b> to the <b>final launch</b>. Direct communication, no middlemen, and quality that speaks for itself.</p>
+      <div class="names">
+        <span class="reveal">Creative</span><span class="reveal">Passionate</span><span class="reveal">Reliable</span>
+        <span class="reveal">Fast</span><span class="reveal">Detail-oriented</span><span class="reveal">Honest</span>
+        <span class="reveal">Dedicated</span><span class="reveal">Supportive</span><span class="reveal">Ambitious</span>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact" data-shape="5">
+      <p class="eyebrow reveal">let's build something amazing</p>
+      <a href="#" class="mail hoverable reveal js-email" id="bigEmail">EMAIL ME</a>
+      <div class="foot">
+        <div class="fcol reveal"><h4>Based in</h4><p>Egypt<br>Available worldwide<br>Remote projects</p></div>
+        <div class="fcol reveal"><h4>Direct contact</h4>
+          <p>
+            <a class="flink hoverable" href="https://wa.me/201101431270" target="_blank" rel="noopener">WhatsApp — +20 110 143 1270</a><br>
+            <a class="flink hoverable js-email-link" href="#">Email me anytime</a>
+          </p>
+        </div>
+        <div class="fcol reveal"><h4>Social</h4>
+          <p>
+            <a class="flink hoverable" href="https://www.instagram.com/ahmedfathy.business" target="_blank" rel="noopener">Instagram — @ahmedfathy.business</a><br>
+            <a class="flink hoverable" href="https://www.facebook.com/share/1BsbFzeMCn/" target="_blank" rel="noopener">Facebook — Ahmed Fathy</a>
+          </p>
+        </div>
+      </div>
+      <div class="copy reveal">©Copyright 2026 Ahmed Fathy — All rights reserved</div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script type="module">
+import * as THREE from 'three';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ============================================================
+   CONFIG
+============================================================ */
+const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+const COUNT = isMobile ? 14000 : 36000;
+const PALETTE = [
+  new THREE.Color('#e8b04b'), // gold
+  new THREE.Color('#e8b04b'),
+  new THREE.Color('#5b8def'), // blue
+  new THREE.Color('#5b8def'),
+  new THREE.Color('#f5f5f5')  // white
+];
+
+/* ============================================================
+   SHAPE GENERATORS — each returns Float32Array(COUNT*3)
+============================================================ */
+function randSphere(r) {
+  const u = Math.random() * Math.PI * 2;
+  const v = Math.acos(2 * Math.random() - 1);
+  const rr = Math.cbrt(Math.random()) * r;
+  return [rr * Math.sin(v) * Math.cos(u), rr * Math.sin(v) * Math.sin(u), rr * Math.cos(v)];
+}
+
+// 0 — TORUS KNOT (hero)
+function shapeTorusKnot() {
+  const arr = new Float32Array(COUNT * 3);
+  const p = 2, q = 3;
+  for (let i = 0; i < COUNT; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const a = 2 + Math.cos(q * t);
+    let x = a * Math.cos(p * t);
+    let y = a * Math.sin(p * t);
+    let z = Math.sin(q * t);
+    const [jx, jy, jz] = randSphere(0.34);
+    arr[i * 3]     = (x + jx) * 0.85;
+    arr[i * 3 + 1] = (y + jy) * 0.85;
+    arr[i * 3 + 2] = (z + jz) * 0.85;
+  }
+  return arr;
+}
+
+// 1 — NOISY SPHERE (agency)
+function shapeSphere() {
+  const arr = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    const [x, y, z] = randSphere(1);
+    const r = 1.55 + (Math.random() - 0.5) * 0.55 * Math.random();
+    arr[i * 3]     = x * r;
+    arr[i * 3 + 1] = y * r;
+    arr[i * 3 + 2] = z * r;
+  }
+  return arr;
+}
+
+// 2 — GALAXY SPIRAL (solutions)
+function shapeGalaxy() {
+  const arr = new Float32Array(COUNT * 3);
+  const branches = 3;
+  for (let i = 0; i < COUNT; i++) {
+    const t = Math.pow(Math.random(), 1.4) * 5.5;
+    const branch = i % branches;
+    const angle = t * 1.15 + (branch / branches) * Math.PI * 2;
+    const r = t * 0.42;
+    const spread = 0.28 * (1 - t / 7);
+    const gx = (Math.random() - 0.5) * 2 * spread;
+    const gy = (Math.random() - 0.5) * 2 * spread * 1.4;
+    const gz = (Math.random() - 0.5) * 2 * spread;
+    arr[i * 3]     = Math.cos(angle) * r + gx;
+    arr[i * 3 + 1] = gy;
+    arr[i * 3 + 2] = Math.sin(angle) * r + gz;
+  }
+  return arr;
+}
+
+// 3 — TEXT "AHMED" (expertise) — placeholder sphere, filled after font loads
+function shapeSphereSmall() {
+  const arr = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    const [x, y, z] = randSphere(1);
+    const r = 1.35 + (Math.random() - 0.5) * 0.4;
+    arr[i * 3] = x * r; arr[i * 3 + 1] = y * r; arr[i * 3 + 2] = z * r;
+  }
+  return arr;
+}
+function shapeText(font) {
+  const geo = new TextGeometry('AHMED', {
+    font, size: 1.7, height: 0.55, curveSegments: 8,
+    bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.05, bevelSegments: 3
+  });
+  geo.center();
+  geo.computeBoundingBox();
+  const w = geo.boundingBox.max.x - geo.boundingBox.min.x;
+  const fit = Math.min(1, 4.4 / w); // auto-fit: never wider than 4.4 units (fits mobile screens)
+  geo.scale(fit, fit, fit);
+  const src = geo.attributes.position.array;
+  const n = src.length / 3;
+  const arr = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    const j = (i % n) * 3;
+    arr[i * 3]     = src[j]     + (Math.random() - 0.5) * 0.05;
+    arr[i * 3 + 1] = src[j + 1] + (Math.random() - 0.5) * 0.05;
+    arr[i * 3 + 2] = src[j + 2] + (Math.random() - 0.5) * 0.05;
+  }
+  geo.dispose();
+  return arr;
+}
+
+// 4 — DOUBLE TORUS KNOT (team)
+function shapeKnotVariant() {
+  const arr = new Float32Array(COUNT * 3);
+  const p = 3, q = 4;
+  for (let i = 0; i < COUNT; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const a = 2 + Math.cos(q * t);
+    let x = a * Math.cos(p * t);
+    let y = a * Math.sin(p * t);
+    let z = Math.sin(q * t);
+    const [jx, jy, jz] = randSphere(0.3);
+    arr[i * 3]     = (x + jx) * 0.62;
+    arr[i * 3 + 1] = (y + jy) * 0.62;
+    arr[i * 3 + 2] = (z + jz) * 0.62;
+  }
+  return arr;
+}
+
+// 5 — HEART (contact)
+function shapeHeart() {
+  const arr = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    const z = (Math.random() - 0.5) * 3.2;
+    const [jx, jy, jz] = randSphere(0.55);
+    arr[i * 3]     = (x + jx) * 0.085;
+    arr[i * 3 + 1] = (y + jy) * 0.085;
+    arr[i * 3 + 2] = (z + jz) * 0.085;
+  }
+  return arr;
+}
+
+const shapes = [
+  shapeTorusKnot(), shapeSphere(), shapeGalaxy(), shapeSphereSmall(), shapeKnotVariant(), shapeHeart()
+];
+
+// Async: replace placeholder with real text particles
+new FontLoader().load(
+  'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json',
+  font => { shapes[3] = shapeText(font); },
+  undefined,
+  () => { /* keep sphere fallback */ }
+);
+
+/* ============================================================
+   SCENE
+============================================================ */
+const canvas = document.getElementById('webgl');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100);
+camera.position.set(0, 0, 6);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+const positions = new Float32Array(shapes[0]);
+const colors = new Float32Array(COUNT * 3);
+const seeds = new Float32Array(COUNT);
+for (let i = 0; i < COUNT; i++) {
+  const c = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  const shade = 0.75 + Math.random() * 0.25;
+  colors[i * 3] = c.r * shade; colors[i * 3 + 1] = c.g * shade; colors[i * 3 + 2] = c.b * shade;
+  seeds[i] = Math.random() * Math.PI * 2;
+}
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+const material = new THREE.PointsMaterial({
+  size: isMobile ? 0.03 : 0.022,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.95,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false
+});
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+/* ============================================================
+   SCROLL → MORPH
+============================================================ */
+let targetProgress = 0;
+let progress = 0;
+function updateScroll() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  targetProgress = max > 0 ? window.scrollY / max : 0;
+}
+addEventListener('scroll', updateScroll, { passive: true });
+updateScroll();
+
+/* Mouse parallax */
+let mx = 0, my = 0;
+addEventListener('mousemove', e => {
+  mx = (e.clientX / innerWidth - 0.5) * 2;
+  my = (e.clientY / innerHeight - 0.5) * 2;
+});
+
+/* ============================================================
+   RENDER LOOP
+============================================================ */
+const clock = new THREE.Clock();
+const N = shapes.length - 1;
+
+function tick() {
+  const time = clock.getElapsedTime();
+  progress += (targetProgress - progress) * 0.07;
+
+  // continuous morph between shapes
+  const p = progress * N;
+  const i0 = Math.min(Math.floor(p), N - 1);
+  const i1 = i0 + 1;
+  const f = p - i0;
+  const A = shapes[i0], B = shapes[i1];
+  const pos = geometry.attributes.position.array;
+
+  const wf = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; // easeInOut
+  for (let i = 0; i < COUNT; i++) {
+    const i3 = i * 3;
+    const s = Math.sin(time * 1.1 + seeds[i]) * 0.035;
+    pos[i3]     = A[i3]     + (B[i3]     - A[i3])     * wf + s;
+    pos[i3 + 1] = A[i3 + 1] + (B[i3 + 1] - A[i3 + 1]) * wf + Math.cos(time * 0.9 + seeds[i]) * 0.035;
+    pos[i3 + 2] = A[i3 + 2] + (B[i3 + 2] - A[i3 + 2]) * wf + s;
+  }
+  geometry.attributes.position.needsUpdate = true;
+
+  // rotation: slow idle spin + scroll-driven turns + mouse parallax
+  points.rotation.y = time * 0.08 + progress * Math.PI * 2.5 + mx * 0.25;
+  points.rotation.x = Math.sin(progress * Math.PI) * 0.3 + my * 0.2;
+  const scale = 1 + Math.sin(progress * Math.PI * N) * 0.08;
+  points.scale.setScalar(scale);
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+tick();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+/* ============================================================
+   TEXT REVEALS
+============================================================ */
+gsap.utils.toArray('.reveal').forEach(el => {
+  if (el.closest('.hero')) return; // hero revealed by preloader callback — avoid double animation
+  gsap.fromTo(el,
+    { yPercent: 130, rotate: 3, opacity: 0 },
+    {
+      yPercent: 0, rotate: 0, opacity: 1,
+      duration: 1.2, ease: 'power4.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    });
+});
+
+/* ============================================================
+   CUSTOM CURSOR
+============================================================ */
+const dot = document.querySelector('.cursor-dot');
+const ring = document.querySelector('.cursor-ring');
+let cx = innerWidth / 2, cy = innerHeight / 2, rx = cx, ry = cy;
+addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+(function cursorLoop() {
+  rx += (cx - rx) * 0.14;
+  ry += (cy - ry) * 0.14;
+  dot.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%)`;
+  ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+  requestAnimationFrame(cursorLoop);
+})();
+document.querySelectorAll('.hoverable, a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('grow'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('grow'));
+});
+
+/* ============================================================
+   MENU
+============================================================ */
+const burger = document.getElementById('burger');
+const overlay = document.getElementById('menuOverlay');
+burger.addEventListener('click', () => {
+  const opening = !overlay.classList.contains('open');
+  burger.classList.toggle('open');
+  overlay.classList.toggle('open');
+  if (opening) {
+    gsap.fromTo('.menu-item',
+      { x: -60, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.7, stagger: 0.06, delay: 0.25, ease: 'power3.out' });
+  }
+});
+overlay.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    burger.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+});
+
+/* Smooth anchor scroll */
+document.querySelectorAll('[data-scroll]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      e.preventDefault();
+      document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+/* ============================================================
+   EMAIL — built at runtime so server-side obfuscation
+   (Cloudflare "Email Protection" etc.) can never break it
+============================================================ */
+const EMAIL = 'ahmedfathy.business1' + '@' + 'gmail.com';
+const bigEmail = document.getElementById('bigEmail');
+if (bigEmail) {
+  bigEmail.textContent = EMAIL;
+  bigEmail.href = 'mailto:' + EMAIL;
+}
+document.querySelectorAll('.js-email-link').forEach(a => {
+  a.href = 'mailto:' + EMAIL;
+});
+
+/* ============================================================
+   PRELOADER
+============================================================ */
+const counterEl = document.getElementById('counter');
+const preloader = document.getElementById('preloader');
+const load = { v: 0 };
+gsap.to(load, {
+  v: 100, duration: 1.6, ease: 'power2.inOut',
+  onUpdate: () => counterEl.textContent = Math.round(load.v),
+  onComplete: () => {
+    gsap.to(preloader, {
+      yPercent: -100, duration: 0.9, ease: 'power4.inOut',
+      onComplete: () => preloader.remove()
+    });
+    gsap.fromTo('.hero .reveal',
+      { yPercent: 130, opacity: 0 },
+      { yPercent: 0, opacity: 1, duration: 1.3, stagger: 0.09, ease: 'power4.out', delay: 0.45 });
+  }
+});
+
+</script>
+</body>
+</html>
