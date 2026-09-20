@@ -57,6 +57,7 @@ body{
   display:flex;justify-content:space-between;align-items:center;
   padding:22px 4vw;
   background:linear-gradient(180deg,rgba(8,8,10,.9),rgba(8,8,10,0));
+  backdrop-filter: blur(4px);
   text-shadow:0 1px 8px rgba(0,0,0,.8);
 }
 .logo{font-family:var(--font-d);font-weight:900;color:var(--fg);text-decoration:none;letter-spacing:.08em;font-size:18px;display:flex;align-items:center;gap:12px}
@@ -112,7 +113,7 @@ main{position:relative;z-index:5}
 }
 .line{display:block;overflow:hidden}
 .reveal{display:inline-block;will-change:transform}
-.intro,.section p{max-width:600px;margin-top:28px;color:#ffffff;font-size:clamp(17px,2.2vw,20px);line-height:1.8;font-weight:500;text-shadow:0 0 10px rgba(0,0,0,.95),0 0 30px rgba(0,0,0,.9),0 0 50px rgba(0,0,0,.7)}
+.intro,.section p{max-width:600px;margin-top:28px;color:#f2f2f0;font-size:clamp(17px,2.2vw,20px);line-height:1.8;font-weight:400;text-shadow:0 1px 12px rgba(0,0,0,.95)}
 .section.right p{margin-right:0}
 b{color:#fff;font-weight:600}
 
@@ -127,7 +128,7 @@ b{color:#fff;font-weight:600}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 30px rgba(232,176,75,0.7)}
 .btn-secondary{
   border:1px solid rgba(255,255,255,0.3);color:var(--fg);padding:14px 28px;border-radius:40px;
-  font-weight:600;text-decoration:none;background:rgba(10,10,12,.4);transition:all .3s ease;
+  font-weight:600;text-decoration:none;backdrop-filter:blur(5px);transition:all .3s ease;
 }
 .btn-secondary:hover{border-color:var(--gold);color:var(--gold);background:rgba(232,176,75,0.05)}
 
@@ -139,25 +140,24 @@ b{color:#fff;font-weight:600}
 .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:6vh;width:100%;max-width:1200px}
 .project-card{
   background:rgba(20,20,25,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:16px;
-  padding:28px;transition:all .4s cubic-bezier(0.16,1,0.3,1);
+  padding:28px;backdrop-filter:blur(10px);transition:all .4s cubic-bezier(0.16,1,0.3,1);
   display:flex;flex-direction:column;justify-content:space-between;min-height:260px;
 }
 .project-card:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
 .project-card h3{font-family:var(--font-d);font-size:24px;margin-bottom:8px;color:#fff}
 .project-card p{font-size:14px;color:#aaa;line-height:1.6;margin-top:0}
 .project-tag{display:inline-block;padding:4px 10px;background:rgba(232,176,75,0.15);color:var(--gold);border-radius:6px;font-size:12px;font-weight:600;margin-bottom:12px}
-.concept-note{font-size:12px;color:#8a8a8a;letter-spacing:.12em;text-transform:uppercase;margin-top:22px}
 
 /* expertise */
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-top:6vh;max-width:1100px;width:100%}
 .col h3{font-family:var(--font-d);font-weight:800;font-size:17px;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:18px}
 .col ul{list-style:none}
-.col li{color:#e8e8e6;font-size:15px;font-weight:400;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);text-shadow:0 0 8px rgba(0,0,0,.9),0 0 20px rgba(0,0,0,.8);transition:color .3s,padding-left .3s}
+.col li{color:#d6d6d4;font-size:15px;font-weight:400;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);transition:color .3s,padding-left .3s}
 .col li:hover{color:var(--fg);padding-left:8px}
 
 /* team names */
 .names{display:flex;flex-wrap:wrap;gap:18px 30px;margin-top:5vh;max-width:1000px}
-.names span{font-family:var(--font-d);font-weight:800;font-size:clamp(22px,3.2vw,42px);text-transform:capitalize;color:transparent;-webkit-text-stroke:1.4px rgba(242,242,240,.95);filter:drop-shadow(0 0 8px rgba(0,0,0,.9)) drop-shadow(0 0 22px rgba(0,0,0,.8));transition:.35s}
+.names span{font-family:var(--font-d);font-weight:800;font-size:clamp(22px,3.2vw,42px);text-transform:capitalize;color:transparent;-webkit-text-stroke:1.4px rgba(242,242,240,.95);transition:.35s}
 .names span:hover{color:var(--gold);-webkit-text-stroke:1px var(--gold);transform:translateY(-4px)}
 
 /* contact */
@@ -172,8 +172,8 @@ b{color:#fff;font-weight:600}
 .mail:hover::after{transform:scaleX(1);transform-origin:left}
 .foot{display:flex;flex-wrap:wrap;gap:50px;justify-content:center;text-align:left}
 .fcol h4{font-family:var(--font-d);font-size:15px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;color:var(--gold)}
-.fcol p{color:#e2e2e0;font-size:15px;font-weight:400;line-height:2;text-shadow:0 0 8px rgba(0,0,0,.9),0 0 20px rgba(0,0,0,.8)}
-.flink{color:#e2e2e0;font-weight:500;text-decoration:none;text-shadow:0 0 8px rgba(0,0,0,.9),0 0 20px rgba(0,0,0,.8);transition:color .3s}
+.fcol p{color:#cfcfcd;font-size:15px;font-weight:400;line-height:2}
+.flink{color:#cfcfcd;font-weight:500;text-decoration:none;transition:color .3s}
 .flink:hover{color:var(--gold)}
 .copy{margin-top:8vh;font-size:13px;color:#9a9a98;letter-spacing:.08em}
 
@@ -187,7 +187,6 @@ b{color:#fff;font-weight:600}
 .modal-card{
   background:#111116;border:1px solid rgba(232,176,75,0.3);border-radius:24px;
   padding:40px;max-width:540px;width:100%;position:relative;transform:scale(0.9);transition:transform .4s ease;
-  max-height:90vh;overflow-y:auto;
 }
 .modal-overlay.active .modal-card{transform:scale(1)}
 .modal-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#aaa;font-size:24px;cursor:pointer}
@@ -202,14 +201,6 @@ b{color:#fff;font-weight:600}
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus{border-color:var(--gold)}
 .btn-submit{width:100%;background:var(--gold);color:#000;padding:14px;border:none;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px;transition:all 0.3s ease}
 .btn-submit:disabled{opacity:0.6;cursor:not-allowed}
-
-/* ---------- Mobile nav fix (fix #3) ---------- */
-@media (max-width:768px){
-  .status-badge{display:none}
-  .nav-links a:not(.btn-cta){display:none}
-  .nav{padding:16px 4vw}
-  .btn-cta{padding:8px 14px;font-size:13px !important}
-}
 
 </style>
 <script type="importmap">
@@ -274,7 +265,7 @@ b{color:#fff;font-weight:600}
           <a href="#work" class="btn-secondary hoverable" data-scroll>Explore Selected Work</a>
         </div>
       </div>
-      <div class="scroll-hint"><span class="reveal">Scroll to interact</span><i></i></div>
+      <div class="scroll-hint"><span class="reveal">Swipe or Scroll to Interaction</span><i></i></div>
     </section>
 
     <!-- ABOUT -->
@@ -287,7 +278,7 @@ b{color:#fff;font-weight:600}
     <section class="section" id="work" data-shape="2">
       <h2 class="mega"><span class="line"><span class="reveal">FEATURED</span></span><span class="line"><span class="reveal">WORK</span></span></h2>
       <p class="reveal">A glimpse into custom WebGL & 3D projects engineered for maximal visual impact.</p>
-
+      
       <div class="projects-grid reveal">
         <div class="project-card hoverable">
           <div>
@@ -295,7 +286,7 @@ b{color:#fff;font-weight:600}
             <h3>Spatial Brand Experience</h3>
             <p>An immersive WebGL product showcase increasing user dwell time by over 140%.</p>
           </div>
-          <a href="#" class="flink js-open-modal" style="margin-top: 20px; display: inline-block; color: var(--gold)">Discuss a similar project →</a>
+          <a href="#" class="flink js-open-modal" style="margin-top: 20px; display: inline-block; color: var(--gold)">Request Demo →</a>
         </div>
 
         <div class="project-card hoverable">
@@ -304,7 +295,7 @@ b{color:#fff;font-weight:600}
             <h3>Luxury Product Configurator</h3>
             <p>Real-time 3D web configurator empowering clients to customize products prior to purchase.</p>
           </div>
-          <a href="#" class="flink js-open-modal" style="margin-top: 20px; display: inline-block; color: var(--gold)">Discuss a similar project →</a>
+          <a href="#" class="flink js-open-modal" style="margin-top: 20px; display: inline-block; color: var(--gold)">Request Demo →</a>
         </div>
 
         <div class="project-card hoverable">
@@ -313,10 +304,9 @@ b{color:#fff;font-weight:600}
             <h3>Crypto & AI Portal</h3>
             <p>High-speed, particle-driven landing page built to turn visitors into leads.</p>
           </div>
-          <a href="#" class="flink js-open-modal" style="margin-top: 20px; display: inline-block; color: var(--gold)">Discuss a similar project →</a>
+          <a href="#" class="flink js-open-modal" style="margin-top: 20px; display: inline-block; color: var(--gold)">Request Demo →</a>
         </div>
       </div>
-      <p class="concept-note reveal">Concept showcase — your project could be next</p>
     </section>
 
     <!-- SERVICES -->
@@ -326,7 +316,7 @@ b{color:#fff;font-weight:600}
     </section>
 
     <!-- EXPERTISE -->
-    <section class="section" id="expertise" data-shape="4">
+    <section class="section" id="expertise" data-shape="3">
       <h2 class="giant"><span class="line"><span class="reveal">Core Capabilities</span></span></h2>
       <div class="cols">
         <div class="col reveal">
@@ -345,7 +335,7 @@ b{color:#fff;font-weight:600}
     </section>
 
     <!-- WHY ME -->
-    <section class="section" id="team" data-shape="5">
+    <section class="section" id="team" data-shape="4">
       <h2 class="mega"><span class="line"><span class="reveal">WHY</span></span><span class="line"><span class="reveal">WORK</span></span><span class="line"><span class="reveal">WITH ME</span></span></h2>
       <p class="reveal">Direct collaboration with a specialist committed to single-project focus, fast communication, and top-tier execution.</p>
       <div class="names">
@@ -357,14 +347,13 @@ b{color:#fff;font-weight:600}
     <!-- CONTACT -->
     <section class="section contact" id="contact" data-shape="5">
       <p class="eyebrow reveal">READY TO ELEVATE YOUR BRAND?</p>
-      <a href="#" class="mail hoverable reveal js-open-modal" id="bigEmail">START A PROJECT NOW</a>
+      <a href="#" class="mail hoverable reveal js-email js-open-modal" id="bigEmail">START A PROJECT NOW</a>
       <div class="foot">
         <div class="fcol reveal"><h4>Based in</h4><p>Egypt<br>Worldwide Remote Projects</p></div>
         <div class="fcol reveal"><h4>Direct contact</h4>
           <p>
             <a class="flink hoverable" href="https://wa.me/201101431270" target="_blank" rel="noopener">WhatsApp — +20 110 143 1270</a><br>
-            <a class="flink hoverable" id="emailLine" href="#">Email me</a><br>
-            <a class="flink hoverable js-open-modal" href="#">Send direct message</a>
+            <a class="flink hoverable js-email-link js-open-modal" href="#">Send direct message</a>
           </p>
         </div>
         <div class="fcol reveal"><h4>Social</h4>
@@ -384,7 +373,7 @@ b{color:#fff;font-weight:600}
       <button class="modal-close" id="closeModal">&times;</button>
       <h3>Let's Build Something Great</h3>
       <p>Tell me a bit about your project goals and requirements.</p>
-
+      
       <!-- MODIFIED DUAL FORM (EMAIL + WHATSAPP) -->
       <form id="dualProjectForm">
         <div class="form-group">
@@ -426,7 +415,7 @@ gsap.registerPlugin(ScrollTrigger);
    CONFIG
 ============================================================ */
 const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-const COUNT = isMobile ? 12000 : 26000;
+const COUNT = isMobile ? 16000 : 38000;
 const PALETTE = [
   new THREE.Color('#e8b04b'),
   new THREE.Color('#e8b04b'),
@@ -568,23 +557,23 @@ new FontLoader().load(
 );
 
 /* ============================================================
-   SCENE SETUP — antialias only on desktop (fix #5)
+   SCENE SETUP
 ============================================================ */
 const canvas = document.getElementById('webgl');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100);
 camera.position.set(0, 0, 6);
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.25 : 1.5));
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
 const positions = new Float32Array(shapes[0]);
 const colors = new Float32Array(COUNT * 3);
 const seeds = new Float32Array(COUNT);
 for (let i = 0; i < COUNT; i++) {
   const c = PALETTE[Math.floor(Math.random() * PALETTE.length)];
-  const shade = 0.4 + Math.random() * 0.25;
+  const shade = 0.75 + Math.random() * 0.25;
   colors[i * 3] = c.r * shade; colors[i * 3 + 1] = c.g * shade; colors[i * 3 + 2] = c.b * shade;
   seeds[i] = Math.random() * Math.PI * 2;
 }
@@ -594,39 +583,15 @@ geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
 const material = new THREE.PointsMaterial({
-  size: isMobile ? 0.026 : 0.019,
+  size: isMobile ? 0.032 : 0.024,
   vertexColors: true,
   transparent: true,
-  opacity: 0.48,
+  opacity: 0.85,
   blending: THREE.AdditiveBlending,
   depthWrite: false
 });
 const points = new THREE.Points(geometry, material);
 scene.add(points);
-
-/* ============================================================
-   ADAPTIVE PERFORMANCE — تكيف تلقائي مع قوة المعالج
-   يقيس الفريمات الحقيقية وينزل/يطلع مستوى الجودة لوحده
-============================================================ */
-const TIERS = [
-  { ratio: isMobile ? 1.25 : 2, draw: COUNT, morphEvery: 2 },                            // جهاز قوي (4K native على DPR-2)
-  { ratio: 1.0,                  draw: Math.floor(COUNT * 0.7),  morphEvery: 3 },       // متوسط
-  { ratio: 0.8,                  draw: Math.floor(COUNT * 0.45), morphEvery: 4 }         // ضعيف
-];
-const hwCores = navigator.hardwareConcurrency || 8;
-const hwMem = navigator.deviceMemory || 8;
-let startTier = 0;
-if (isMobile || hwCores <= 4) startTier = 1;
-if (hwCores <= 2 || hwMem <= 2) startTier = 2;
-
-const quality = { tier: startTier, morphEvery: 2 };
-function applyQuality() {
-  const t = TIERS[quality.tier];
-  renderer.setPixelRatio(Math.min(devicePixelRatio, t.ratio));
-  geometry.setDrawRange(0, t.draw);
-  quality.morphEvery = t.morphEvery;
-}
-applyQuality();
 
 /* ============================================================
    SMOOTH TOUCH & MOUSE INTERACTION PHYSICS
@@ -676,48 +641,27 @@ updateScroll();
 ============================================================ */
 const clock = new THREE.Clock();
 const N = shapes.length - 1;
-let frame = 0;
-let fpsFrames = 0, fpsTime = 0, lastNow = performance.now();
 
 function tick() {
-  // FPS watchdog — كل ثانيتين يقيس الفريمات ويعدل الجودة تلقائياً
-  const now = performance.now();
-  const dt = now - lastNow; lastNow = now;
-  fpsFrames++; fpsTime += dt;
-  if (fpsTime >= 2000) {
-    const fps = (1000 * fpsFrames) / fpsTime;
-    fpsFrames = 0; fpsTime = 0;
-    if (fps < 45 && quality.tier < TIERS.length - 1) {
-      quality.tier++;
-      applyQuality();        // فيريمات وقعت → نزل مستوى
-    } else if (fps > 57 && quality.tier > startTier) {
-      quality.tier--;
-      applyQuality();        // الجهاز قوي → ارجع مستوى أعلى
-    }
-  }
-
   const time = clock.getElapsedTime();
   progress += (targetProgress - progress) * 0.07;
-  frame++;
 
-  if (frame % quality.morphEvery === 0) {
-    const p = progress * N;
-    const i0 = Math.min(Math.floor(p), N - 1);
-    const i1 = i0 + 1;
-    const f = p - i0;
-    const A = shapes[i0], B = shapes[i1];
-    const pos = geometry.attributes.position.array;
+  const p = progress * N;
+  const i0 = Math.min(Math.floor(p), N - 1);
+  const i1 = i0 + 1;
+  const f = p - i0;
+  const A = shapes[i0], B = shapes[i1];
+  const pos = geometry.attributes.position.array;
 
-    const wf = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
-    for (let i = 0; i < COUNT; i++) {
-      const i3 = i * 3;
-      const s = Math.sin(time * 1.1 + seeds[i]) * 0.035;
-      pos[i3]     = A[i3]     + (B[i3]     - A[i3])     * wf + s;
-      pos[i3 + 1] = A[i3 + 1] + (B[i3 + 1] - A[i3 + 1]) * wf + Math.cos(time * 0.9 + seeds[i]) * 0.035;
-      pos[i3 + 2] = A[i3 + 2] + (B[i3 + 2] - A[i3 + 2]) * wf + s;
-    }
-    geometry.attributes.position.needsUpdate = true;
+  const wf = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+  for (let i = 0; i < COUNT; i++) {
+    const i3 = i * 3;
+    const s = Math.sin(time * 1.1 + seeds[i]) * 0.035;
+    pos[i3]     = A[i3]     + (B[i3]     - A[i3])     * wf + s;
+    pos[i3 + 1] = A[i3 + 1] + (B[i3 + 1] - A[i3 + 1]) * wf + Math.cos(time * 0.9 + seeds[i]) * 0.035;
+    pos[i3 + 2] = A[i3 + 2] + (B[i3 + 2] - A[i3 + 2]) * wf + s;
   }
+  geometry.attributes.position.needsUpdate = true;
 
   targetRotationY += 0.003;
   points.rotation.y += (targetRotationY + progress * Math.PI * 2 + mouseX * 0.3 - points.rotation.y) * 0.05;
@@ -756,7 +700,7 @@ const dot = document.querySelector('.cursor-dot');
 const ring = document.querySelector('.cursor-ring');
 let cx = innerWidth / 2, cy = innerHeight / 2, rx = cx, ry = cy;
 addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
-if (!isMobile) (function cursorLoop() {
+(function cursorLoop() {
   rx += (cx - rx) * 0.14; ry += (cy - ry) * 0.14;
   dot.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%)`;
   ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
@@ -782,25 +726,6 @@ overlay.querySelectorAll('.menu-item').forEach(item => {
   });
 });
 
-/* Smooth anchor scroll (fix #6 — restored) */
-document.querySelectorAll('[data-scroll]').forEach(a => {
-  a.addEventListener('click', e => {
-    const id = a.getAttribute('href');
-    if (id && id.startsWith('#')) {
-      e.preventDefault();
-      document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-});
-
-/* Email — built at runtime so host obfuscation can never break it (fix #4) */
-const EMAIL = 'ahmedfathy.business1' + '@' + 'gmail.com';
-const emailLine = document.getElementById('emailLine');
-if (emailLine) {
-  emailLine.textContent = 'Email — ' + EMAIL;
-  emailLine.href = 'mailto:' + EMAIL;
-}
-
 /* Modal Booking Controls */
 const modal = document.getElementById('bookingModal');
 const openBtns = document.querySelectorAll('.js-open-modal');
@@ -817,11 +742,8 @@ modal.addEventListener('click', (e) => {
   if (e.target === modal) modal.classList.remove('active');
 });
 
-/* DUAL SUBMISSION SCRIPT (EMAIL BACKUP + WHATSAPP)
-   ⚠️ FIX #1: استبدل xbjnqkyw بـ ID الخاص بك من formspree.com
-   اعمل حساب مجاني → New Form → خد الـ ID بتاعك وحطه مكان الكلمة دي */
+/* DUAL SUBMISSION SCRIPT (EMAIL BACKUP + WHATSAPP) */
 const dualForm = document.getElementById('dualProjectForm');
-const FORMSPREE_ID = 'xbjnqkyw'; // ← غيّر ده للـ ID بتاعك
 
 if (dualForm) {
   dualForm.addEventListener('submit', async function(e) {
@@ -831,11 +753,13 @@ if (dualForm) {
     submitBtn.innerText = "Processing...";
     submitBtn.disabled = true;
 
+    // 1. Extract values
     const name = document.getElementById('custName').value.trim();
     const contact = document.getElementById('custContact').value.trim();
     const type = document.getElementById('projectType').value;
     const brief = document.getElementById('projectBrief').value.trim();
 
+    // 2. Prepare WhatsApp Message
     const phoneNumber = "201101431270";
     const waMessage = `*طلب مشروع جديد من الموقع* 🚀\n\n` +
                       `👤 *الاسم:* ${name}\n` +
@@ -845,11 +769,13 @@ if (dualForm) {
 
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(waMessage)}`;
 
+    // 3. Open WhatsApp Immediately
     window.open(whatsappURL, '_blank');
 
+    // 4. Send Email in Background via Formspree
     try {
       const formData = new FormData(dualForm);
-      await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+      await fetch('https://formspree.io/f/xbjnqkyw', {
         method: 'POST',
         body: formData,
         headers: { 'Accept': 'application/json' }
@@ -857,6 +783,7 @@ if (dualForm) {
     } catch (error) {
       console.error('Email backup error:', error);
     } finally {
+      // Reset UI and form
       submitBtn.innerText = "Send via WhatsApp & Email →";
       submitBtn.disabled = false;
       modal.classList.remove('active');
